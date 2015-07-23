@@ -1,6 +1,5 @@
 package domain.core.time
 
-import domain.core.time.DateTimeUtil
 import org.joda.time.DateTime
 import org.scalatest.{MustMatchers, WordSpec}
 

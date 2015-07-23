@@ -1,9 +1,8 @@
 package domain.core.mongo
 
-import domain.core.mongo.MongoConnector
-import org.specs2.mutable.Specification
 import com.github.fakemongo.Fongo
 import com.mongodb.casbah.MongoDB
+import org.specs2.mutable.Specification
 
 trait WithEmbeddedMongo extends WithMongo {
   this: Specification =>

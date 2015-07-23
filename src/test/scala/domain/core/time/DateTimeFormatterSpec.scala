@@ -1,9 +1,8 @@
 package domain.core.time
 
-import domain.core.time.DateTimeUtil
+import domain.core.time.DateTimeUtil._
 import org.joda.time.DateTime
 import org.scalatest.{MustMatchers, WordSpec}
-import DateTimeUtil._
 
 class DateTimeFormatterSpec extends WordSpec with MustMatchers {
   "formatAsDay " should {

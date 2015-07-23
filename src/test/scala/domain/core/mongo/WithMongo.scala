@@ -4,7 +4,6 @@ import java.util.UUID
 
 import com.mongodb.casbah.commons.conversions.scala.{RegisterConversionHelpers, RegisterJodaTimeConversionHelpers}
 import com.mongodb.casbah.{MongoClient, MongoClientURI}
-import domain.core.mongo.{MongoConnector, Mongo}
 import org.specs2.execute.{AsResult, Result}
 import org.specs2.mutable.Specification
 import org.specs2.specification.AroundEach
