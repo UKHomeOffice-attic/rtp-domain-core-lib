@@ -29,6 +29,7 @@ object Permission {
     case Smoke.name => Smoke
     case CustomerService.name => CustomerService
     case _ => null
+//    case _ => throw new IllegalArgumentException(s"Invalid permission: $permission")
   }
 }
 
