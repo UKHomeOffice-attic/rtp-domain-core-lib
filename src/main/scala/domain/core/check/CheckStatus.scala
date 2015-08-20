@@ -12,8 +12,7 @@ trait CheckStatus {
 object CheckStatus {
   val allStatuses = Seq(CHECK_NOT_STARTED, CHECK_IN_PROGRESS, CHECK_ACCEPTED, CHECK_AWAITING_INFO, CHECK_REJECTED, CHECK_INVESTIGATE, CHECK_ESCALATED)
 
-  def forName(name: String): Option[CheckStatus] =
-    allStatuses.find(caseStatus => caseStatus.name.equals(name) || caseStatus.displayName.equals(name))
+  def forName(name: String): CheckStatus = allStatuses.find { caseStatus => caseStatus.name.equals(name) || caseStatus.displayName.equals(name) } getOrElse( throw new IllegalArgumentException(s"Invalid Check status: $name"))
 }
 
 case object CHECK_NOT_STARTED extends CheckStatus { override val displayName = "Not Started" }
@@ -28,4 +27,4 @@ case object CHECK_AWAITING_INFO extends CheckStatus { override val displayName =
 
 case object CHECK_INVESTIGATE extends CheckStatus { override val displayName = "Investigate" }
 
-case object CHECK_ESCALATED extends CheckStatus { override  val displayName = "Escalated" }
+case object CHECK_ESCALATED extends CheckStatus { override val displayName = "Escalated" }
