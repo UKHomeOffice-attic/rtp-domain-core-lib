@@ -32,7 +32,7 @@ class EmailRepository(val mc: MongoConnector) extends CasbahRepository with Logg
     for { x <- emailCursor } yield { Email(x) }
   }
 
-  def findForCasesAndEmailTypes(caseIds: Seq[ObjectId], emailTypes: Seq[String]): List[Email] = {
+  def findForCasesAndEmailTypes(caseIds: Iterable[ObjectId], emailTypes: Seq[String]): List[Email] = {
     val query = $and(Email.CASE_ID $in caseIds, Email.TYPE $in emailTypes)
     val emailCursor = collection.find(query).toList
     for { x <- emailCursor } yield { Email(x) }
