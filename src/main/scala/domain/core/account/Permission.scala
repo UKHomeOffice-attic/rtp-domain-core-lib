@@ -9,7 +9,7 @@ sealed trait Permission {
 
 object Permission {
   val allPermissions = Seq(Administrator, AdministratorManager, Manager, SeniorCaseworker, Caseworker,
-                           TRAVEL_HISTORY_PERMISSION, WI_CROSSCHECK_PERMISSION, PNC_CROSSCHECK_PERMISSION, WICU_ARRIVALS_PERMISSION, DAILY_WASH_PERMISSION, GREENLIST_PERMISSION, WICU_CIO_PERMISSION,
+                           TRAVEL_HISTORY_PERMISSION, WI_CROSSCHECK_PERMISSION, OGD_DOWNLOAD_PERMISSION, PNC_CROSSCHECK_PERMISSION, WICU_ARRIVALS_PERMISSION, DAILY_WASH_PERMISSION, GREENLIST_PERMISSION, WICU_CIO_PERMISSION,
                            CustomerService)
 
   def valueOf(permission: String): Permission = permission match {
@@ -21,6 +21,7 @@ object Permission {
     case SeniorCaseworker.name => SeniorCaseworker
     case TRAVEL_HISTORY_PERMISSION.name => TRAVEL_HISTORY_PERMISSION
     case WI_CROSSCHECK_PERMISSION.name => WI_CROSSCHECK_PERMISSION
+    case OGD_DOWNLOAD_PERMISSION.name => OGD_DOWNLOAD_PERMISSION
     case PNC_CROSSCHECK_PERMISSION.name => PNC_CROSSCHECK_PERMISSION
     case GREENLIST_PERMISSION.name => GREENLIST_PERMISSION
     case DAILY_WASH_PERMISSION.name => DAILY_WASH_PERMISSION
@@ -67,6 +68,10 @@ case object TRAVEL_HISTORY_PERMISSION extends Permission {
 
 case object WI_CROSSCHECK_PERMISSION extends Permission {
   override val name: String = "WICrossCheck"
+}
+
+case object OGD_DOWNLOAD_PERMISSION extends Permission {
+  override val name: String = "OGDDownload"
 }
 
 case object PNC_CROSSCHECK_PERMISSION extends Permission {
