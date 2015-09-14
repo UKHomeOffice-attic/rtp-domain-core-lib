@@ -5,7 +5,7 @@ import org.bson.types.ObjectId
 import org.joda.time.DateTime
 import org.specs2.mock.Mockito
 import org.specs2.mutable.Specification
-import EmailStatus._
+import domain.core.email.EmailStatus._
 
 class EmailRepositorySpec extends Specification with Mockito with WithMongo {
   val repository = new EmailRepository(mongoConnector)
@@ -63,6 +63,18 @@ class EmailRepositorySpec extends Specification with Mockito with WithMongo {
       val emailDocs = repository.findByStatus(STATUS_WAITING)
       emailDocs.size mustEqual 1
       emailDocs.head.emailId mustEqual emailObj.emailId
+    }
+  }
+
+  "findNextEmailToSend" should {
+    "find the next email and set it to be IN_PROGRESS" in {
+      val emailObj = insertEmail()
+
+      repository.findByEmailId(emailId = emailObj.emailId).get.status must_== STATUS_WAITING
+
+      val emailToSend: Option[Email] = repository.nextEmailToSend
+      emailToSend.get must_==emailObj
+      repository.findByEmailId(emailId = emailObj.emailId).get.status must_== STATUS_IN_PROGRESS
     }
   }
 

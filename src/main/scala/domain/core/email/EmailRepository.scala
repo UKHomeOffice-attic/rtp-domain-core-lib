@@ -1,5 +1,6 @@
 package domain.core.email
 
+import com.mongodb.casbah.Imports
 import com.mongodb.casbah.Imports._
 import com.mongodb.casbah.commons.MongoDBObject
 import domain.core.mongo.{CasbahRepository, MongoConnector}
@@ -21,6 +22,11 @@ class EmailRepository(val mc: MongoConnector) extends CasbahRepository with Logg
     }
   }
 
+  def nextEmailToSend : Option[Email] = {
+    collection.findAndModify(byEmailStatus(EmailStatus.STATUS_WAITING),$set(Email.STATUS -> EmailStatus.STATUS_IN_PROGRESS)).map(Email(_))
+  }
+
+
   def findByCaseId(caseId:String): List[Email] = {
     val emailCursor = collection.find(MongoDBObject(Email.CASE_ID -> new ObjectId(caseId))).sort(orderBy = MongoDBObject(Email.DATE -> -1)).toList
     for { x <- emailCursor } yield { Email(x) }
@@ -39,8 +45,12 @@ class EmailRepository(val mc: MongoConnector) extends CasbahRepository with Logg
   }
 
   def findByStatus(emailStatus: String): List[Email] = {
-    val emailCursor = collection.find(MongoDBObject(Email.STATUS -> emailStatus)).limit(MAX_LIMIT).toList
+    val emailCursor = collection.find(byEmailStatus(emailStatus)).limit(MAX_LIMIT).toList
     for { x <- emailCursor } yield { Email(x) }
+  }
+
+  def byEmailStatus(emailStatus: String): Imports.DBObject = {
+    MongoDBObject(Email.STATUS -> emailStatus)
   }
 
   def resend(emailId: String): Email = {
