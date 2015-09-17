@@ -22,11 +22,6 @@ class EmailRepository(val mc: MongoConnector) extends CasbahRepository with Logg
     }
   }
 
-  def nextEmailToSend : Option[Email] = {
-    collection.findAndModify(byEmailStatus(EmailStatus.STATUS_WAITING),$set(Email.STATUS -> EmailStatus.STATUS_IN_PROGRESS)).map(Email(_))
-  }
-
-
   def findByCaseId(caseId:String): List[Email] = {
     val emailCursor = collection.find(MongoDBObject(Email.CASE_ID -> new ObjectId(caseId))).sort(orderBy = MongoDBObject(Email.DATE -> -1)).toList
     for { x <- emailCursor } yield { Email(x) }
@@ -39,10 +34,21 @@ class EmailRepository(val mc: MongoConnector) extends CasbahRepository with Logg
   }
 
   def findForCasesAndEmailTypes(caseIds: Iterable[ObjectId], emailTypes: Seq[String]): List[Email] = {
-    val query = $and(Email.CASE_ID $in caseIds, Email.TYPE $in emailTypes)
-    val emailCursor = collection.find(query).toList
+    val emailCursor = collection.find(byCaseIdsAndEmailTypes(caseIds, emailTypes)).toList
     for { x <- emailCursor } yield { Email(x) }
   }
+
+
+  def findCaseIdsForEmailAlreadySent(caseIds: Iterable[ObjectId], emailTypes: Seq[String]): List[ObjectId] = {
+    collection
+      .find(byCaseIdsAndEmailTypes(caseIds, emailTypes), MongoDBObject(Email.CASE_ID -> 1))
+      .flatMap(x => x.getAs[ObjectId](Email.CASE_ID)).toList
+  }
+
+  def byCaseIdsAndEmailTypes(caseIds: Iterable[ObjectId], emailTypes: Seq[String]): Imports.DBObject = {
+    $and(Email.CASE_ID $in caseIds, Email.TYPE $in emailTypes)
+  }
+
 
   def findByStatus(emailStatus: String): List[Email] = {
     val emailCursor = collection.find(byEmailStatus(emailStatus)).limit(MAX_LIMIT).toList

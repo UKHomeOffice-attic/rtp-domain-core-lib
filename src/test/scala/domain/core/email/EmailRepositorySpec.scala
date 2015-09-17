@@ -14,16 +14,7 @@ class EmailRepositorySpec extends Specification with Mockito with WithMongo {
   val MEMBERSHIP_EXPIRES_SOON = "expiring soon"
 
   def insertEmail(caseId: Option[ObjectId] = Some(new ObjectId()), emailType: String = PROVISIONAL_ACCEPTANCE, html: String = "html") = {
-    val email = Email(
-      caseId = if (caseId.isEmpty) None else Some(caseId.get.toString),
-      date = new DateTime(),
-      recipient = caseId + " recipient",
-      subject = "subject",
-      text = "text",
-      html = html,
-      status = STATUS_WAITING,
-      emailType = emailType)
-
+    val email = EmailBuilder(caseId = caseId, html = html, emailType = emailType)
     repository.insert(email)
     email
   }
@@ -63,18 +54,6 @@ class EmailRepositorySpec extends Specification with Mockito with WithMongo {
       val emailDocs = repository.findByStatus(STATUS_WAITING)
       emailDocs.size mustEqual 1
       emailDocs.head.emailId mustEqual emailObj.emailId
-    }
-  }
-
-  "findNextEmailToSend" should {
-    "find the next email and set it to be IN_PROGRESS" in {
-      val emailObj = insertEmail()
-
-      repository.findByEmailId(emailId = emailObj.emailId).get.status must_== STATUS_WAITING
-
-      val emailToSend: Option[Email] = repository.nextEmailToSend
-      emailToSend.get must_==emailObj
-      repository.findByEmailId(emailId = emailObj.emailId).get.status must_== STATUS_IN_PROGRESS
     }
   }
 
@@ -143,5 +122,41 @@ class EmailRepositorySpec extends Specification with Mockito with WithMongo {
 
       emails mustEqual Seq(provisionalAcceptanceEmail, failedCredibilityEmail, membershipExpiresSoonEmail)
     }
+  }
+
+
+  "findCaseIdsForEmailAlreadySent" should {
+    "Return all case ids for which email already sent" in {
+      val _caseId= new ObjectId()
+      val notToBeFound = ObjectId.get()
+
+      val emailType = "email type"
+
+      insertEmail(caseId = Some(_caseId), emailType = emailType)
+      insertEmail(caseId = Some(notToBeFound), emailType = "some other email type")
+
+      val caseIds = repository.findCaseIdsForEmailAlreadySent(Seq(_caseId, notToBeFound),Seq(emailType))
+
+      caseIds must haveSize(1)
+      caseIds must contain(_caseId)
+
+    }
+
+    "Return empty if no case ids provided" in {
+      val _caseId= new ObjectId()
+      val notToBeFound = ObjectId.get()
+
+      val emailType = "email type"
+
+      insertEmail(caseId = Some(_caseId), emailType = emailType)
+      insertEmail(caseId = Some(notToBeFound), emailType = "some other email type")
+
+      val caseIds = repository.findCaseIdsForEmailAlreadySent(Seq(),Seq(emailType))
+
+      caseIds must haveSize(0)
+
+    }
+
+
   }
 }

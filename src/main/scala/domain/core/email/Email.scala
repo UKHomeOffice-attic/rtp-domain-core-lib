@@ -56,7 +56,6 @@ object Email {
 
 object EmailStatus {
   val STATUS_WAITING: String = "WAITING"
-  val STATUS_IN_PROGRESS: String = "IN_PROGRESS"
   val STATUS_SENT: String = "SENT"
   val STATUS_ERROR: String = "ERROR"
   val STATUS_EMAIL_ADDRESS_ERROR: String = "ERROR - Email Address"
