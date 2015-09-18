@@ -1,7 +1,8 @@
 package domain.core.email
 
-import com.mongodb.DBObject
-import com.mongodb.casbah.commons.MongoDBObject
+import com.mongodb.casbah.query.BaseImports
+import com.mongodb.{BasicDBList, DBObject}
+import com.mongodb.casbah.commons.{MongoDBList, MongoDBObject}
 import org.bson.types.ObjectId
 import org.joda.time.DateTime
 
@@ -13,12 +14,13 @@ case class Email(emailId: String = new ObjectId().toString,
                  text: String,
                  html: String,
                  status: String,
-                 emailType: String) {
+                 emailType: String,
+                 cc: List[String] = List.empty) {
 
   def toDBObject: DBObject = {
     val builder = MongoDBObject.newBuilder
     builder += Email.EMAIL_ID -> new ObjectId(emailId)
-    caseId.map( id => builder += Email.CASE_ID -> new ObjectId(id))
+    caseId.map(id => builder += Email.CASE_ID -> new ObjectId(id))
     builder += Email.DATE -> date
     builder += Email.RECIPIENT -> recipient
     builder += Email.SUBJECT -> subject
@@ -26,6 +28,7 @@ case class Email(emailId: String = new ObjectId().toString,
     builder += Email.HTML -> html
     builder += Email.STATUS -> status
     builder += Email.TYPE -> emailType
+    builder += Email.CC -> MongoDBList(cc:_*).underlying
     builder.result()
   }
 }
@@ -40,6 +43,7 @@ object Email {
   val HTML: String = "html"
   val STATUS: String = "status"
   val TYPE: String = "type"
+  val CC: String = "cc"
 
   def apply(dbObject: DBObject): Email = {
     new Email(dbObject.get(EMAIL_ID).asInstanceOf[ObjectId].toString,
@@ -50,7 +54,9 @@ object Email {
       dbObject.get(TEXT).asInstanceOf[String],
       dbObject.get(HTML).asInstanceOf[String],
       dbObject.get(STATUS).asInstanceOf[String],
-      dbObject.get(TYPE).asInstanceOf[String])
+      dbObject.get(TYPE).asInstanceOf[String],
+      if (dbObject.containsField(CC)) dbObject.get(CC).asInstanceOf[BasicDBList].toArray(Array.empty[String]).toList else List.empty
+    )
   }
 }
 
