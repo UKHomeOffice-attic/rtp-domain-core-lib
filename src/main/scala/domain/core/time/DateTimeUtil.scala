@@ -7,6 +7,7 @@ object DateTimeUtil {
   val dayFormat = DateTimeFormat.forPattern("dd/MM/yyyy")
   val dayTimeFormat = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm:ss")
   val dateHHmmFormat = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm")
+  val timeFormat = DateTimeFormat.forPattern("HH:mm")
   val dayMonthYearTextFormat =  DateTimeFormat.forPattern("EEEE d MMMM yyyy")
 
   implicit class BetterDateTime(val dt: DateTime) {
@@ -15,12 +16,15 @@ object DateTimeUtil {
     def formatAsDayTime = formatDayTime(dt)
     def formatAsDateHHmm = formatDateHHmm(dt)
     def formatAsDayMonthYearText = formatDayMonthYearText(dt)
+    def formatAsTime = formatTime(dt)
 
 
     def formatDayMonthYearText(date: DateTime) = dayMonthYearTextFormat.print(date)
     def formatDay(date: DateTime) = dayFormat.print(date)
     def formatDayTime(date: DateTime) = dayTimeFormat.print(date)
     def formatDateHHmm(date: DateTime) = dateHHmmFormat.print(date)
+    def formatTime(date: DateTime) = timeFormat.print(date)
+
   }
 
 
