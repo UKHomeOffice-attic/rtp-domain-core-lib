@@ -7,7 +7,7 @@ import org.specs2.mock.Mockito
 import org.specs2.mutable.Specification
 import domain.core.email.EmailStatus._
 
-class EmailRepositorySpec extends Specification with Mockito with WithMongo {
+class EmailRepositorySpec extends Specification with WithMongo {
   val repository = new EmailRepository(mongoConnector)
   val PROVISIONAL_ACCEPTANCE = "provisional-acceptance"
   val FAILED_CREDIBILITY_CHECK = "failed-credibility-check"
@@ -156,7 +156,5 @@ class EmailRepositorySpec extends Specification with Mockito with WithMongo {
       caseIds must haveSize(0)
 
     }
-
-
   }
 }
