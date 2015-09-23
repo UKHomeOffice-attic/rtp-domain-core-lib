@@ -2,8 +2,6 @@ package domain.core.email
 
 import domain.core.mongo.WithMongo
 import org.bson.types.ObjectId
-import org.joda.time.DateTime
-import org.specs2.mock.Mockito
 import org.specs2.mutable.Specification
 import domain.core.email.EmailStatus._
 
