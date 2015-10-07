@@ -107,11 +107,11 @@ class EmailRepositorySpec extends Specification with WithMongo {
 
   "Find warning emails for cases" should {
     "Return all warning emails for each case" in {
-      val _caseId= new ObjectId()
+      val _caseId = new ObjectId()
 
       val warningEmailTypes = Seq(PROVISIONAL_ACCEPTANCE, FAILED_CREDIBILITY_CHECK, MEMBERSHIP_EXPIRES_SOON)
 
-      insertEmail(caseId = Some(_caseId), emailType = "Ignored Email Type")  // should be ignored in the query below
+      insertEmail(caseId = Some(_caseId), emailType = "Ignored Email Type") // should be ignored in the query below
       val provisionalAcceptanceEmail = insertEmail(caseId = Some(_caseId), emailType = PROVISIONAL_ACCEPTANCE)
       val failedCredibilityEmail = insertEmail(caseId = Some(_caseId), emailType = FAILED_CREDIBILITY_CHECK)
       val membershipExpiresSoonEmail = insertEmail(caseId = Some(_caseId), emailType = MEMBERSHIP_EXPIRES_SOON)
@@ -125,7 +125,7 @@ class EmailRepositorySpec extends Specification with WithMongo {
 
   "findCaseIdsForEmailAlreadySent" should {
     "Return all case ids for which email already sent" in {
-      val _caseId= new ObjectId()
+      val _caseId = new ObjectId()
       val notToBeFound = ObjectId.get()
 
       val emailType = "email type"
@@ -133,15 +133,15 @@ class EmailRepositorySpec extends Specification with WithMongo {
       insertEmail(caseId = Some(_caseId), emailType = emailType)
       insertEmail(caseId = Some(notToBeFound), emailType = "some other email type")
 
-      val caseIds = repository.findCaseIdsForEmailAlreadySent(Seq(_caseId, notToBeFound),Seq(emailType))
+      val caseIds = repository.findEmailTypesAndCaseIds(Seq(_caseId, notToBeFound), Seq(emailType))
 
       caseIds must haveSize(1)
-      caseIds must contain(_caseId)
+      caseIds must contain((emailType, _caseId))
 
     }
 
     "Return empty if no case ids provided" in {
-      val _caseId= new ObjectId()
+      val _caseId = new ObjectId()
       val notToBeFound = ObjectId.get()
 
       val emailType = "email type"
@@ -149,7 +149,7 @@ class EmailRepositorySpec extends Specification with WithMongo {
       insertEmail(caseId = Some(_caseId), emailType = emailType)
       insertEmail(caseId = Some(notToBeFound), emailType = "some other email type")
 
-      val caseIds = repository.findCaseIdsForEmailAlreadySent(Seq(),Seq(emailType))
+      val caseIds = repository.findEmailTypesAndCaseIds(Seq(), Seq(emailType))
 
       caseIds must haveSize(0)
 
