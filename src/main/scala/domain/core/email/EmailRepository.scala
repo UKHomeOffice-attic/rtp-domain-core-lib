@@ -49,9 +49,9 @@ class EmailRepository(val mc: MongoConnector) extends CasbahRepository with Logg
     (for {
       item <- collection.find(byCaseIdsAndEmailTypes(caseIds, emailTypes), MongoDBObject(Email.CASE_ID -> 1, Email.TYPE -> 1))
       emailType <- item.getAs[String](Email.TYPE)
-      objectId <- item.getAs[ObjectId](Email.CASE_ID)
+      caseId <- item.getAs[ObjectId](Email.CASE_ID)
     } yield {
-        (emailType, objectId)
+        (emailType, caseId)
       }) toList
 
 
