@@ -1,7 +1,6 @@
 import sbt._
 import Keys._
 
-
 object Build extends Build {
   val moduleName = "rtp-domain-core-lib"
 
@@ -40,20 +39,16 @@ object Build extends Build {
         "com.novus" %% "salat" % "1.9.9",
         "com.github.scopt" %% "scopt" % "3.2.0" withSources(),
         "com.github.nscala-time" %% "nscala-time" % "2.0.0" withSources(),
-        "org.json4s" %% "json4s-native" % "3.2.11" withSources(),
-        "org.json4s" %% "json4s-jackson" % "3.2.11" withSources(),
-        "org.json4s" %% "json4s-ext" % "3.2.11" withSources(),
-        "org.json4s" %% "json4s-mongo" % "3.2.11" withSources(),
         "org.clapper" %% "classutil" % "1.0.5" withSources(),
-        "org.scala-lang.modules" %% "scala-pickling" % "0.10.0" withSources()),
+        "org.scala-lang.modules" %% "scala-pickling" % "0.10.0" withSources(),
+        "uk.gov.homeoffice" %% "rtp-test-lib" % "1.0-SNAPSHOT" withSources(),
+        "uk.gov.homeoffice" %% "rtp-io-lib" % "1.0-SNAPSHOT" withSources()),
       libraryDependencies ++= Seq(
         "com.github.fakemongo" % "fongo" % "1.6.2" % Test withSources(),
-        "org.specs2" %% "specs2-core" % "3.6.2" % Test withSources(),
-        "org.specs2" %% "specs2-mock" % "3.6.2" % Test withSources(),
-        "org.specs2" %% "specs2-matcher-extra" % "3.6.2" % Test withSources(),
         "org.mockito" % "mockito-all" % "1.10.19" % Test withSources(),
-        "org.scalatest" %% "scalatest" % "2.2.4" % Test withSources())
+        "org.scalatest" %% "scalatest" % "2.2.4" % Test withSources(),
+        "uk.gov.homeoffice" %% "rtp-test-lib" % "1.0-SNAPSHOT" % Test classifier "tests" withSources(),
+        "uk.gov.homeoffice" %% "rtp-io-lib" % "1.0-SNAPSHOT" % Test classifier "tests" withSources()
+      )
     )
-
-
 }
