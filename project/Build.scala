@@ -44,7 +44,7 @@ object Build extends Build {
         "uk.gov.homeoffice" %% "rtp-test-lib" % "1.0-SNAPSHOT" withSources(),
         "uk.gov.homeoffice" %% "rtp-io-lib" % "1.0-SNAPSHOT" withSources()),
       libraryDependencies ++= Seq(
-        "com.github.fakemongo" % "fongo" % "1.6.2" % Test withSources(),
+        "com.github.fakemongo" % "fongo" % "1.6.4" % Test withSources(),
         "org.mockito" % "mockito-all" % "1.10.19" % Test withSources(),
         "org.scalatest" %% "scalatest" % "2.2.4" % Test withSources(),
         "uk.gov.homeoffice" %% "rtp-test-lib" % "1.0-SNAPSHOT" % Test classifier "tests" withSources(),
