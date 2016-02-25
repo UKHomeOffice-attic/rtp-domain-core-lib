@@ -22,6 +22,7 @@ object Permission {
     case TRAVEL_HISTORY_PERMISSION.name => TRAVEL_HISTORY_PERMISSION
     case WI_CROSSCHECK_PERMISSION.name => WI_CROSSCHECK_PERMISSION
     case OGD_DOWNLOAD_PERMISSION.name => OGD_DOWNLOAD_PERMISSION
+    case MIDA_PERMISSION.name => MIDA_PERMISSION
     case PNC_CROSSCHECK_PERMISSION.name => PNC_CROSSCHECK_PERMISSION
     case GREENLIST_PERMISSION.name => GREENLIST_PERMISSION
     case DAILY_WASH_PERMISSION.name => DAILY_WASH_PERMISSION
@@ -72,6 +73,10 @@ case object WI_CROSSCHECK_PERMISSION extends Permission {
 
 case object OGD_DOWNLOAD_PERMISSION extends Permission {
   override val name: String = "OGDDownload"
+}
+
+case object MIDA_PERMISSION extends Permission {
+  override val name: String = "Mida"
 }
 
 case object PNC_CROSSCHECK_PERMISSION extends Permission {

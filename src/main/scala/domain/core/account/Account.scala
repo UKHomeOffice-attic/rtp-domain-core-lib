@@ -28,6 +28,8 @@ case class Account(email: String, firstName: String, surname: String, permission
   def isManagerOrTester = isManager || isTester
 
   def isSeniorCaseworkerOrManager = isManagerOrTester || isSeniorCaseworker
+
+  def isMida = permission == MIDA_PERMISSION
 }
 
 object Account {
