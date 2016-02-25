@@ -9,7 +9,7 @@ sealed trait Permission {
 
 object Permission {
   val allPermissions = Seq(Administrator, AdministratorManager, Manager, SeniorCaseworker, Caseworker,
-                           TRAVEL_HISTORY_PERMISSION, WI_CROSSCHECK_PERMISSION, OGD_DOWNLOAD_PERMISSION, PNC_CROSSCHECK_PERMISSION, WICU_ARRIVALS_PERMISSION, DAILY_WASH_PERMISSION, GREENLIST_PERMISSION, WICU_CIO_PERMISSION,
+                           TRAVEL_HISTORY_PERMISSION, WI_CROSSCHECK_PERMISSION, OGD_DOWNLOAD_PERMISSION, MIDA_PERMISSION, PNC_CROSSCHECK_PERMISSION, WICU_ARRIVALS_PERMISSION, DAILY_WASH_PERMISSION, GREENLIST_PERMISSION, WICU_CIO_PERMISSION,
                            CustomerService)
 
   def valueOf(permission: String): Permission = permission match {
